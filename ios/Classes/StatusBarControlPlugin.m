@@ -30,6 +30,28 @@
     }
 }
 
+// 替换废弃方法：setStatusBarHidden:withAnimation: 改为使用 prefersStatusBarHidden
+- (BOOL)prefersStatusBarHidden {
+    // 根据需求返回YES或NO
+    return YES; // 或者返回NO
+}
+
+// 替换废弃方法：setStatusBarStyle:animated: 改为使用 preferredStatusBarStyle
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    // 返回需要的样式，如 UIStatusBarStyleDefault 或 UIStatusBarStyleLightContent
+    return UIStatusBarStyleLightContent;
+}
+
+// 替换废弃属性：statusBarFrame 改为通过 UIStatusBarManager 获取
+- (CGRect)currentStatusBarFrame {
+    if (@available(iOS 13.0, *)) {
+        UIWindow *window = [UIApplication sharedApplication].windows.firstObject;
+        return window.windowScene.statusBarManager.statusBarFrame;
+    } else {
+        return [UIApplication sharedApplication].statusBarFrame;
+    }
+}
+
 - (void)handleSetHidden:(FlutterMethodCall *)call result:(FlutterResult)result {
     NSDictionary *args = call.arguments;
     bool hidden = [args[@"hidden"] boolValue];
